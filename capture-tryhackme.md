@@ -181,6 +181,8 @@ At this point we can go to the browser using the username and password to obtain
 ![capture-completed](https://user-images.githubusercontent.com/25124463/236889555-c44067f1-4066-4135-8c5f-71bb841fa410.png)
 
 
+**DISCLAIMER**
+As an ethical hacker, I must emphasize that the following writeup is intended for educational purposes only. My goal as a "white hat" hacker is to identify and expose vulnerabilities in computer systems and networks in order to improve security. It's important to note that unauthorized hacking or accessing of systems without permission is illegal and can result in severe legal consequences. I strongly advise against using the information provided in this writeup for any illegal or unethical purposes. As the author and publisher of this content, I do not condone any illegal activities and I am not responsible for any actions taken by readers. It is your responsibility as a reader to use this information ethically and legally. Let's use our technical skills to make the digital world a safer place.
 
 
 
