@@ -39,7 +39,7 @@ The username hacking script must do the following:
 * When captcha is found in the response we must solve it and include it in the request payload. 
 * Loop through usernames and halt the script when a response returns html code that doesn't include ``Error: The user 'admin' does not exist``. 
 
-My solution might not be most elegant but it works to find the username lol
+My solution might not be the most elegant but it works to find the username lol
 <details>
 <summary>Code</summary>
 
