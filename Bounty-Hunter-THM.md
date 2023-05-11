@@ -42,3 +42,4 @@ Nmap done: 1 IP address (1 host up) scanned in 46.91 seconds
 From the results we see that FTP service running on Port 21, SSH on Port 22 and an http server on Port 80. 
 
 
+
