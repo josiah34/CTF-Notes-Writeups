@@ -1,5 +1,5 @@
 ## Bounty Hunter TryHackMe
-
+Room Link: https://tryhackme.com/room/cowboyhacker
 ### Enumeration 
 
 After a quick nmap scan we get this result:
@@ -90,7 +90,19 @@ User lin may run the following commands on bountyhacker:
 
 ```
 
-From the above command we can see that we can run tar commands as root. Using [GTFOBINS(https://gtfobins.github.io/)
+From the above command we can see that we can run tar commands as root. Using [GTFOBINS](https://gtfobins.github.io/) we can find an exploit of the tar command to get root. 
 
+```
+
+sudo tar -cf /dev/null /dev/null --checkpoint=1 --checkpoint-action=exec=/bin/sh
+
+```
+
+
+After issuing the exploit we know have root. All the questions in the room can be solved using this information.
+
+
+**DISCLAIMER**
+As an ethical hacker, I must emphasize that the following writeup is intended for educational purposes only. My goal as a "white hat" hacker is to identify and expose vulnerabilities in computer systems and networks in order to improve security. It's important to note that unauthorized hacking or accessing of systems without permission is illegal and can result in severe legal consequences. I strongly advise against using the information provided in this writeup for any illegal or unethical purposes. As the author and publisher of this content, I do not condone any illegal activities and I am not responsible for any actions taken by readers. It is your responsibility as a reader to use this information ethically and legally. Let's use our technical skills to make the digital world a safer place
 
 
